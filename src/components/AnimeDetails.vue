@@ -1,0 +1,124 @@
+<template>
+  <div class="flip-card">
+    <div class="flip-card-inner">
+      <div class="flip-card-front">
+        <img :src="item.picture" alt="Avatar" style="width:225px;height:315px;">
+      </div>
+      <div class="flip-card-back">
+        <v-card-title>{{item.title}}</v-card-title>
+
+        <v-card-text>
+          <v-row align="center" class="mx-0">
+            <div>
+              <p>
+                Studio: {{item.studio}}
+              </p>
+            </div>
+          </v-row>
+          <v-row align="left" class="mx-0">
+            <div>
+              <p>
+                Genres: {{item.genre}}
+              </p>
+            </div>
+          </v-row>
+          <v-row align="center" class="mx-0">
+            <div>
+              <p>
+                Rating: {{item.rating}}
+              </p>
+            </div>
+          </v-row>
+        </v-card-text>
+
+        <div class="text-center">
+          <v-dialog v-model="dialog" width="600">
+
+            <template v-slot:activator="{ on, attrs }">
+              <v-btn color="light-green" dark v-bind="attrs" v-on="on">
+                Summary
+              </v-btn>
+            </template>
+
+            <v-card>
+              <v-card-title class="text-h5 black lighten-2">
+                Summary
+              </v-card-title>
+
+              <v-card-text>
+                {{item.summary}}
+              </v-card-text>
+
+              <v-divider></v-divider>
+
+              <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn color="primary" text @click="dialog = false">
+                  Close
+                </v-btn>
+              </v-card-actions>
+            </v-card>
+          </v-dialog>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+import {Anime} from "@/models/CardItems";
+
+export default {
+  name: "AnimeDetails",
+  props: {item:Anime},
+
+  methods:{
+    data(){
+      return {
+        dialog: false,
+      }
+    }
+  }
+}
+</script>
+
+<style scoped>
+.flip-card{
+  background-color: transparent;
+  width: 225px;
+  height: 315px;
+  perspective: 1000px;
+}
+
+.flip-card-inner{
+  position: relative;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  transition: transform 0.8s;
+  transform-style: preserve-3d;
+}
+
+.flip-card:hover .flip-card-inner{
+  transform: rotateY(180deg);
+}
+
+.flip-card-front, .flip-card-back{
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+}
+
+.flip-card-front {
+  background-color: #bbb;
+  color: black;
+}
+
+.flip-card-back {
+  background-color: black;
+  color: white;
+  transform: rotateY(180deg);
+}
+</style>
