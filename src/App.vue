@@ -3,7 +3,8 @@
     <div>
       <v-app-bar color="light-green" dark app>
         <v-icon>mdi-alpha-a-box</v-icon>
-        <v-toolbar-title>nime Search</v-toolbar-title>
+        <router-link to="/" style="text-decoration: none; color: white"><v-toolbar-title>nime Search</v-toolbar-title></router-link>
+
 
         <v-spacer></v-spacer>
 
@@ -17,9 +18,12 @@
           </v-btn>
         </v-form>
 
+
         <v-btn>
-          Quiz <v-icon>mdi-badge-account-outline</v-icon>
+          <router-link style="text-decoration: none; color: white" to="/quiz">Quiz <v-icon>mdi-badge-account-outline</v-icon></router-link>
         </v-btn>
+
+
       </v-app-bar>
     </div>
     <br>
