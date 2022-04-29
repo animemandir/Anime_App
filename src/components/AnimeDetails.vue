@@ -5,7 +5,7 @@
         <img :src="item.picture" alt="Avatar" style="width:225px;height:315px;">
       </div>
       <div class="flip-card-back">
-        <v-card-title>{{item.title}}</v-card-title>
+
 
         <v-card-text>
           <v-row align="center" class="mx-0">
@@ -42,7 +42,7 @@
 
             <v-card>
               <v-card-title class="text-h5 black lighten-2">
-                Summary
+                {{item.title}}
               </v-card-title>
 
               <v-card-text>
