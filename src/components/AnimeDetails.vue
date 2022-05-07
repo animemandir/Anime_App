@@ -6,23 +6,22 @@
       </div>
       <div class="flip-card-back">
 
-
         <v-card-text>
-          <v-row align="center" class="mx-0">
+          <v-row class="mx-0">
             <div>
               <p>
                 Studio: {{item.studio}}
               </p>
             </div>
           </v-row>
-          <v-row align="left" class="mx-0">
+          <v-row class="mx-0">
             <div>
               <p>
                 Genres: {{item.genre}}
               </p>
             </div>
           </v-row>
-          <v-row align="center" class="mx-0">
+          <v-row class="mx-0">
             <div>
               <p>
                 Rating: {{item.rating}}
@@ -32,7 +31,7 @@
         </v-card-text>
 
         <div class="text-center">
-          <v-dialog v-model="dialog" width="600">
+          <v-dialog width="600">
 
             <template v-slot:activator="{ on, attrs }">
               <v-btn color="light-green" dark v-bind="attrs" v-on="on">

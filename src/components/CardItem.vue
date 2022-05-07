@@ -1,27 +1,21 @@
 <template>
-  <div style="max-width: 225px;">
-<!--    <v-card max-width="400">
-
-    </v-card>-->
-    <div>
+  <div style="max-width: 225px;" class="d-block">
+    <v-card>
       <component :is="typeOfItem" :item="item"></component>
-    </div>
 
-    <v-divider class="mx-4"></v-divider>
+      <div class="text-center">
+        <v-btn style="width: 135px;" @click="$emit('add-watch-later', item)">
+          <v-icon left>mdi-bookmark</v-icon>Watch Later
+        </v-btn>
 
-    <div class="text-center">
-      <v-btn style="width: 135px;">
-        <v-icon left>mdi-bookmark</v-icon>Watch Later
-      </v-btn>
-
-      <v-btn v-if="item.isAvailable()" @click="item.seenAnime()">
-        <v-icon left>mdi-eye</v-icon> Watched
-      </v-btn>
-      <v-btn v-else @click="item.notSeen()">
-        <v-icon left>mdi-eye-off</v-icon> Not Watched
-      </v-btn>
-    </div>
-
+        <v-btn @click="$emit('add-watched', item)">
+          <v-icon left>mdi-eye</v-icon> Watched
+        </v-btn>
+<!--        <v-btn v-else @click="item.notSeen()">-->
+<!--          <v-icon left>mdi-eye-off</v-icon> Not Watched-->
+<!--        </v-btn>-->
+      </div>
+    </v-card>
   </div>
 </template>
 

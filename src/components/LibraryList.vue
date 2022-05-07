@@ -1,6 +1,6 @@
 <template>
   <div>
-    <card-item class="d-inline-flex" v-for="(item, i) in library" :key="i" :item="item"></card-item>
+    <card-item @add-watched="update" @add-watch-later="notSureAnymore" class="d-inline-flex" v-for="(item, i) in library" :key="i" :item="item"></card-item>
   </div>
 </template>
 
@@ -15,12 +15,23 @@ export default {
       page: 1
     }
   },
+
   props: {
     library: {
       type: [],
       required: true,
     }
   },
+
+  methods: {
+    update(y){
+      this.$emit('update-watched', y)
+    },
+
+    notSureAnymore(x){
+      this.$emit('update-watch-later', x)
+    }
+  }
 }
 </script>
 

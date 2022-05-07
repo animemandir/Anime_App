@@ -33,24 +33,24 @@
             <v-col cols="12">
               <label>Best Weezer album</label>
               <v-radio-group v-model="radioGroupThree" column>
-                <v-radio label="Green Album" color="green" value="1"></v-radio>
-                <v-radio label="Red Album" color="green" value="2"></v-radio>
-                <v-radio label="Blue Album" color="green" value="3"></v-radio>
-                <v-radio label="Teal Album" color="green" value="4"></v-radio>
-                <v-radio label="White Album" color="green" value="5"></v-radio>
-                <v-radio label="Raditude" color="green" value="6"></v-radio>
+                <v-radio label="Green Album" color="green" :value="1"></v-radio>
+                <v-radio label="Red Album" color="green" :value="2"></v-radio>
+                <v-radio label="Blue Album" color="green" :value="3"></v-radio>
+                <v-radio label="Teal Album" color="green" :value="4"></v-radio>
+                <v-radio label="White Album" color="green" :value="5"></v-radio>
+                <v-radio label="Raditude" color="green" :value="6"></v-radio>
               </v-radio-group>
             </v-col>
 
             <v-col cols="12">
-              <label></label>
+              <label>favorite pasta</label>
               <v-radio-group v-model="radioGroupFour" column>
-                <v-radio label="new york" color="green" value="1"></v-radio>
-                <v-radio label="seattle" color="green" value="2"></v-radio>
-                <v-radio label="tijuana" color="green" value="3"></v-radio>
-                <v-radio label="dodger dog" color="green" value="4"></v-radio>
-                <v-radio label="carolina" color="green" value="5"></v-radio>
-                <v-radio label="chicago" color="green" value="6"></v-radio>
+                <v-radio label="new york" color="green" :value="1"></v-radio>
+                <v-radio label="seattle" color="green" :value="2"></v-radio>
+                <v-radio label="tijuana" color="green" :value="3"></v-radio>
+                <v-radio label="dodger dog" color="green" :value="4"></v-radio>
+                <v-radio label="carolina" color="green" :value="5"></v-radio>
+                <v-radio label="chicago" color="green" :value="6"></v-radio>
               </v-radio-group>
             </v-col>
           </v-row>
@@ -59,8 +59,8 @@
             <v-col cols="12">
               <label>Mature content</label>
               <v-radio-group v-model="radioGroupFive" column>
-                <v-radio label="yes" color="green" value="true"></v-radio>
-                <v-radio label="no" color="green" value="false"></v-radio>
+                <v-radio label="yes" color="green" :value="true"></v-radio>
+                <v-radio label="no" color="green" :value="false"></v-radio>
               </v-radio-group>
             </v-col>
           </v-row>
@@ -72,7 +72,7 @@
       </v-card-text>
     </v-card>
 
-    <quiz-anime-results v-else></quiz-anime-results>
+    <quiz-anime-results id="result" :library-thingy-thing="LibraryThingyThing" v-else></quiz-anime-results>
   </div>
 </template>
 
@@ -87,6 +87,8 @@ export default {
   components: {QuizAnimeResults},
   data(){
     return {
+      LibraryThingyThing: new LibraryCollection(),
+      animeResults: [],
       quiz: true,
       answers: 0,
       radioGroup: 1,
@@ -100,17 +102,27 @@ export default {
 
   methods: {
     getResults(){
-      this.answers += Number(this.radioGroup.valueOf())
-      this.answers += Number(this.radioGroupTwo.valueOf())
-      this.answers += Number(this.radioGroupThree.valueOf())
-      this.answers += Number(this.radioGroupFour.valueOf())
-      this.answers += Number(this.radioGroupFive.valueOf())
+      this.answers = 0
+      this.answers += this.radioGroup
+      console.log('yy', this.answers)
+      this.answers += this.radioGroupTwo
+      console.log('gran', this.answers)
+      this.answers += this.radioGroupThree
+      console.log('tt', this.answers)
+      this.answers += this.radioGroupFour
+      console.log('xx', this.answers)
 
       this.answers = this.answers * 3
 
+      this.matureContent = this.radioGroupFive
+
+      if (this.matureContent === false && this.answers === 12){
+        this.answers = 22
+      }
+
       this.tom()
 
-      console.log('torino', this.radioGroup)
+      console.log('answer', this.answers)
 
       this.quiz = false
     },
@@ -118,30 +130,34 @@ export default {
     jerry(){
       console.log('pasta',this.animeResults)
 
-      for (let i = 0; i < this.animeResults.length; i++){
+      for (let i = 0; i < this.animeResults[0].length; i++){
 
         // Error down below mentioned in email
 
+        let henry = this.animeResults[0]
+
         let genres = "";
-        this.animeSearchResults[i].genres.forEach(y => {
+        henry[i].genres.forEach(y => {
           genres += y.name + " ";
         });
 
+        console.log('dogege',henry[i])
+
         let studios = "";
-        this.animeSearchResults[i].studios.forEach(y => {
+        henry[i].studios.forEach(y => {
           studios += y.name + " ";
         });
 
         if(this.matureContent === true){
 
-          this.LibraryThingyThing.addItem(new Anime(this.animeSearchResults[i].images.jpg.large_image_url, this.animeSearchResults[i].title, studios, genres, this.animeSearchResults[i].score, this.animeSearchResults[i].synopsis))
+          this.LibraryThingyThing.addItem(new Anime(henry[i].images.jpg.large_image_url, henry[i].title, studios, genres, henry[i].score, henry[i].synopsis))
 
         }else if (this.matureContent === false){
 
           if(genres.toLowerCase().includes("hentai") || genres.toLowerCase().includes("ecchi")){
             console.log('not pog stuff')
           }else{
-            this.LibraryThingyThing.addItem(new Anime(this.animeSearchResults[i].images.jpg.large_image_url, this.animeSearchResults[i].title, studios, genres, this.animeSearchResults[i].score, this.animeSearchResults[i].synopsis))
+            this.LibraryThingyThing.addItem(new Anime(henry[i].images.jpg.large_image_url, henry[i].title, studios, genres, henry[i].score, henry[i].synopsis))
           }
 
         }
@@ -149,7 +165,7 @@ export default {
     },
 
     async tom(){
-      let url = 'https://api.jikan.moe/v4/anime?q=&genres=' + 3;
+      let url = 'https://api.jikan.moe/v4/anime?q=&genres=' + this.answers;
 
       this.LibraryThingyThing = new LibraryCollection();
       this.animeResults = [];
@@ -161,7 +177,7 @@ export default {
             jj.push(z.data.data)
             this.animeResults = jj;
 
-            console.log(jj)
+            console.log('jj', this.animeResults)
           }).catch(error => {
         console.log('error', error);
       }).finally(() => {
@@ -174,5 +190,10 @@ export default {
 </script>
 
 <style scoped>
-
+#result{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  padding-top: 1rem;
+}
 </style>

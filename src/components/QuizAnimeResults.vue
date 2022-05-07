@@ -1,24 +1,25 @@
 <template>
   <div>
-
+    <card-item :item="anime" v-for="anime in LibraryThingyThing" :key="anime.id"></card-item>
   </div>
 </template>
 
 <script>
-import LibraryCollection from "@/models/LibraryCollection";
 
+import CardItem from "@/components/CardItem";
 export default {
   name: "QuizAnimeResults",
-  data(){
-    return {
-      animeResults: [],
-      matureContent: false,
-      LibraryThingyThing: new LibraryCollection(),
-    }
+  components: {CardItem},
+  props: {
+    animeResults: [],
+    matureContent: Boolean,
+    LibraryThingyThing: [],
   },
 
-  methods: {
-
+  data(){
+    return {
+      dialog: false,
+    }
   }
 }
 </script>

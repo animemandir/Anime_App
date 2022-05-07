@@ -1,15 +1,18 @@
 <template>
   <v-app>
     <div>
+<!--      nav bar-->
       <v-app-bar color="light-green" dark app>
         <v-icon>mdi-alpha-a-box</v-icon>
         <router-link to="/" style="text-decoration: none; color: white"><v-toolbar-title>nime Search</v-toolbar-title></router-link>
 
-
         <v-spacer></v-spacer>
 
-        <v-btn>
+        <v-btn v-if="authUser === null" @click="loginWithGoogle">
           <v-icon>mdi-account</v-icon> Log-in
+        </v-btn>
+        <v-btn v-else @click="logOut">
+          <v-icon>mdi-account</v-icon> Log-out
         </v-btn>
 
         <v-form @submit.prevent="getAnimeShtuff">
@@ -18,17 +21,19 @@
           </v-btn>
         </v-form>
 
-
         <v-btn>
           <router-link style="text-decoration: none; color: white" to="/quiz">Quiz <v-icon>mdi-badge-account-outline</v-icon></router-link>
         </v-btn>
 
+        <v-btn>
+          Show Lists<v-icon>mdi-archive</v-icon>
+        </v-btn>
 
       </v-app-bar>
     </div>
     <br>
 
-
+<!--    search stuff-->
     <v-main>
       <v-form @submit.prevent="getAnimeShtuff">
         <v-row>
@@ -49,37 +54,92 @@
       </v-form>
     </v-main>
 
-
+<!--    displays anime-->
     <div id="chickenNuggets">
-      <router-view :library="LibraryThingyThing"></router-view>
+      <router-view :library="LibraryThingyThing" @update-watched="update" @update-watch-later="updateTwo"></router-view>
     </div>
+
+<!--    lists of watch and watched-->
+    <v-container>
+      <v-row no-gutters>
+        <v-col cols="6">
+          <div>
+            <h1><strong>Watched</strong></h1>
+            <v-card>
+              <watch-list :watched="watched"></watch-list>
+            </v-card>
+          </div>
+        </v-col>
+        <v-col cols="6">
+          <div>
+            <h1><strong>Watch Later</strong></h1>
+            <v-card>
+              <watch-later-list :watch-later="watchLater"></watch-later-list>
+            </v-card>
+          </div>
+        </v-col>
+      </v-row>
+    </v-container>
 
   </v-app>
 </template>
 
 <script>
 // import LibraryList from "@/components/LibraryList";
+import WatchList from "@/components/WatchList";
+import watchLaterList from "@/components/WatchLaterList";
 import LibraryCollection from "@/models/LibraryCollection";
+import WatchedCollection from "@/models/WatchedCollection";
+import WatchLaterCollection from "@/models/WatchLaterCollection";
 import {Anime} from "@/models/CardItems";
+import {auth, firebase} from "@/firebase/firebase";
+import User from "@/models/user";
 
 const axios = require('axios').default;
 
 export default {
   name: 'App',
   components: {
-    // LibraryList,
+    WatchList,
+    watchLaterList,
   },
   data(){
     return {
+      authUser: null,
       randomAnime: false,
       matureContent: false,
       searchTerm: '',
       animeSearchResults: [],
       LibraryThingyThing: new LibraryCollection(),
+      watched: new WatchedCollection(),
+      watchLater: new WatchLaterCollection(),
     }
   },
 
   methods: {
+    async loginWithGoogle() {
+      let provider = new firebase.auth.GoogleAuthProvider();
+      await auth.signInWithPopup(provider).catch(error => {
+        console.error('Unable to Sign In', error)
+      })
+
+      console.log(this.authUser)
+    },
+
+    async logOut() {
+      await auth.signOut();
+    },
+
+    update(y){
+      console.log('watched thing', y)
+      this.watched.addItem(y)
+    },
+
+    updateTwo(x){
+      console.log('watch later thing', x)
+      this.watchLater.addItem(x)
+    },
+
     grabby(){
       console.log('EE',this.animeSearchResults)
       for (let i = 0; i < this.animeSearchResults.data.length; i++){
@@ -107,7 +167,6 @@ export default {
             this.LibraryThingyThing.addItem(new Anime(this.animeSearchResults.data[i].images.jpg.large_image_url, this.animeSearchResults.data[i].title, studios, genres, this.animeSearchResults.data[i].score, this.animeSearchResults.data[i].synopsis))
           }
         }
-
       }
 
       console.log('painpain', this.LibraryThingyThing)
@@ -115,8 +174,6 @@ export default {
 
     randomGrabby(){
       console.log('ppp', this.animeSearchResults)
-
-      // Error down below mentioned in email
 
       let genres = "";
       this.animeSearchResults[0].genres.forEach(y => {
@@ -129,12 +186,10 @@ export default {
       });
 
       this.LibraryThingyThing.addItem(new Anime(this.animeSearchResults[0].images.jpg.large_image_url, this.animeSearchResults[0].title, studios, genres, this.animeSearchResults[0].score, this.animeSearchResults[0].synopsis))
-
     },
 
 
     getAnimeShtuff(){
-
       let url = 'https://api.jikan.moe/v4/anime';
 
       let params;
@@ -181,7 +236,17 @@ export default {
       }
 
     }
-  }
+  },
+
+  beforeCreate: async function () {
+    await auth.onAuthStateChanged(x => {
+      if (x) {
+        this.authUser = new User(x);
+      } else {
+        this.authUser = null
+      }
+    })
+  },
 };
 </script>
 
