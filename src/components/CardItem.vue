@@ -11,9 +11,6 @@
         <v-btn @click="$emit('add-watched', item)">
           <v-icon left>mdi-eye</v-icon> Watched
         </v-btn>
-<!--        <v-btn v-else @click="item.notSeen()">-->
-<!--          <v-icon left>mdi-eye-off</v-icon> Not Watched-->
-<!--        </v-btn>-->
       </div>
     </v-card>
   </div>

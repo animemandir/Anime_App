@@ -26,7 +26,7 @@
         </v-btn>
 
         <v-btn>
-          Show Lists<v-icon>mdi-archive</v-icon>
+          <router-link style="text-decoration: none; color: white" to="/lists">Show<v-icon>mdi-archive</v-icon></router-link>
         </v-btn>
 
       </v-app-bar>
@@ -56,43 +56,18 @@
 
 <!--    displays anime-->
     <div id="chickenNuggets">
-      <router-view :library="LibraryThingyThing" @update-watched="update" @update-watch-later="updateTwo"></router-view>
+      <router-view :auth-user="authUser" :library="LibraryThingyThing" @update-watched="update" @update-watch-later="updateTwo"></router-view>
     </div>
 
-<!--    lists of watch and watched-->
-    <v-container>
-      <v-row no-gutters>
-        <v-col cols="6">
-          <div>
-            <h1><strong>Watched</strong></h1>
-            <v-card>
-              <watch-list :watched="watched"></watch-list>
-            </v-card>
-          </div>
-        </v-col>
-        <v-col cols="6">
-          <div>
-            <h1><strong>Watch Later</strong></h1>
-            <v-card>
-              <watch-later-list :watch-later="watchLater"></watch-later-list>
-            </v-card>
-          </div>
-        </v-col>
-      </v-row>
-    </v-container>
 
   </v-app>
 </template>
 
 <script>
 // import LibraryList from "@/components/LibraryList";
-import WatchList from "@/components/WatchList";
-import watchLaterList from "@/components/WatchLaterList";
 import LibraryCollection from "@/models/LibraryCollection";
-import WatchedCollection from "@/models/WatchedCollection";
-import WatchLaterCollection from "@/models/WatchLaterCollection";
 import {Anime} from "@/models/CardItems";
-import {auth, firebase} from "@/firebase/firebase";
+import {auth, db, firebase} from "@/firebase/firebase";
 import User from "@/models/user";
 
 const axios = require('axios').default;
@@ -100,19 +75,18 @@ const axios = require('axios').default;
 export default {
   name: 'App',
   components: {
-    WatchList,
-    watchLaterList,
+
   },
   data(){
     return {
-      authUser: null,
+      authUser: {},
       randomAnime: false,
       matureContent: false,
       searchTerm: '',
       animeSearchResults: [],
       LibraryThingyThing: new LibraryCollection(),
-      watched: new WatchedCollection(),
-      watchLater: new WatchLaterCollection(),
+      watched: [],
+      watchLater: [],
     }
   },
 
@@ -130,14 +104,18 @@ export default {
       await auth.signOut();
     },
 
-    update(y){
+    async update(y){
       console.log('watched thing', y)
-      this.watched.addItem(y)
+      let item = {picture:y.picture, title:y.title, studio:y.studio, genre:y.genre, rating:y.rating, summary:y.summary}
+
+      await db.collection('users').doc(this.authUser.uid).collection('watched').add(item)
     },
 
-    updateTwo(x){
-      console.log('watch later thing', x)
-      this.watchLater.addItem(x)
+    async updateTwo(y){
+      console.log('watch later thing', y)
+      let item = {picture:y.picture, title:y.title, studio:y.studio, genre:y.genre, rating:y.rating, summary:y.summary}
+
+      await db.collection('users').doc(this.authUser.uid).collection('watch-later').add(item)
     },
 
     grabby(){

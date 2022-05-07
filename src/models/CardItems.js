@@ -37,22 +37,4 @@ class Anime {
     }
 }
 
-class Mangas {
-    picture = '';
-    title = '';
-    artist = '';
-    genre = '';
-    rating = '';
-    summary = '';
-
-    constructor(picture, title, artist, genre, rating, summary) {
-        this.picture = picture;
-        this.title = title;
-        this.artist = artist;
-        this.genre = genre;
-        this.rating = rating;
-        this.summary = summary;
-    }
-}
-
-export {CardItem, Anime, Mangas}
+export {CardItem, Anime}
