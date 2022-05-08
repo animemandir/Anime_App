@@ -1,6 +1,9 @@
 <template>
   <div>
-    <watch-item class="d-inline-flex" v-for="(item, i) in watched" :key="i" :item="item"></watch-item>
+    <div v-for="(item, i) in watched" :key="i">
+      <watch-item :item="item"></watch-item>
+      <v-btn @click="deleteStuff(item)">Delete</v-btn>
+    </div>
   </div>
 </template>
 
@@ -26,6 +29,12 @@ export default {
   firestore: function (){
     return {
       watched: db.collection('users').doc(this.authUser.uid).collection('watched')
+    }
+  },
+
+  methods: {
+    async deleteStuff(h){
+      await db.collection('users').doc(this.authUser.uid).collection('watched').doc(h.id).delete()
     }
   },
 }

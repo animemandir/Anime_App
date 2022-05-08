@@ -2,7 +2,7 @@
   <div>
     <div v-for="(item, i) in watchLater" :key="i">
       <watch-item :item="item"></watch-item>
-      <v-btn @click="deleteAnime(item)">delete</v-btn>
+      <v-btn @click="deleteAnime(item)">Delete</v-btn>
     </div>
   </div>
 </template>
@@ -25,19 +25,7 @@ export default {
     //card so it deletes it from the list.
 
     async deleteAnime(l){
-      let id = '';
-      this.watchLater = await db.collection('users').doc(this.authUser.uid).collection('watch-later')
-          .get()
-          .then(dogege => {
-            return dogege.docs;
-          })
-
-      this.watchLater.forEach(dog => {
-        if (l.title === dog.data().title){
-          id = dog.id
-        }
-      })
-      await db.collection('users').doc(this.authUser.uid).collection('watch-later').doc(id).delete();
+      await db.collection('users').doc(this.authUser.uid).collection('watch-later').doc(l.id).delete()
     }
   },
 

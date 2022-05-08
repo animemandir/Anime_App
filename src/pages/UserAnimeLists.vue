@@ -1,16 +1,16 @@
 <template>
   <v-row style="max-width: 100%">
     <v-col cols="6">
-      <h1>Watch later</h1>
-      <div class="d-inline-flex">
+      <h1 class="d-flex justify-center align-center">Watch later</h1>
+      <div class="d-flex justify-center align-center">
         <watch-later-list :auth-user="this.authUser"></watch-later-list>
       </div>
     </v-col>
 
 
     <v-col cols="6">
-      <h1>Watched</h1>
-      <div class="d-inline-flex">
+      <h1 class="d-flex justify-center align-center">Watched</h1>
+      <div class="d-flex justify-center align-center">
         <watch-list :auth-user="this.authUser"></watch-list>
       </div>
     </v-col>
