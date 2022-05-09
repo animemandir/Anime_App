@@ -65,11 +65,11 @@
 </template>
 
 <script>
-import {Anime} from "@/models/CardItems";
+
 
 export default {
   name: "AnimeDetails",
-  props: {item:Anime},
+  props: {item: {type:Object, required: true}},
 
   methods:{
     data(){
