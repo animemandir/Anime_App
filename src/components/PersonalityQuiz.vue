@@ -17,14 +17,14 @@
             </v-col>
 
             <v-col cols="6">
-              <label>favorite hot dog</label>
+              <label>Go Out or Stay In</label>
               <v-radio-group v-model="radioGroupTwo" column>
-                <v-radio label="new york" color="green" :value="1"></v-radio>
-                <v-radio label="seattle" color="green" :value="2"></v-radio>
-                <v-radio label="tijuana" color="green" :value="3"></v-radio>
-                <v-radio label="dodger dog" color="green" :value="4"></v-radio>
-                <v-radio label="carolina" color="green" :value="5"></v-radio>
-                <v-radio label="chicago" color="green" :value="6"></v-radio>
+                <v-radio label="Stay in" color="green" :value="1"></v-radio>
+                <v-radio label="Go out" color="green" :value="2"></v-radio>
+                <v-radio label="Go out alone" color="green" :value="3"></v-radio>
+                <v-radio label="Stay in invite friends over" color="green" :value="4"></v-radio>
+                <v-radio label="Go out with friends" color="green" :value="5"></v-radio>
+                <v-radio label="None" color="green" :value="6"></v-radio>
               </v-radio-group>
             </v-col>
           </v-row>
@@ -43,14 +43,14 @@
             </v-col>
 
             <v-col cols="12">
-              <label>favorite pasta</label>
+              <label>What's Your Diet</label>
               <v-radio-group v-model="radioGroupFour" column>
-                <v-radio label="new york" color="green" :value="1"></v-radio>
-                <v-radio label="seattle" color="green" :value="2"></v-radio>
-                <v-radio label="tijuana" color="green" :value="3"></v-radio>
-                <v-radio label="dodger dog" color="green" :value="4"></v-radio>
-                <v-radio label="carolina" color="green" :value="5"></v-radio>
-                <v-radio label="chicago" color="green" :value="6"></v-radio>
+                <v-radio label="Eat Meat" color="green" :value="1"></v-radio>
+                <v-radio label="Vegan" color="green" :value="2"></v-radio>
+                <v-radio label="Vegetarian" color="green" :value="3"></v-radio>
+                <v-radio label="Pescatarian" color="green" :value="4"></v-radio>
+                <v-radio label="Says they're vegan but actually aren't" color="green" :value="5"></v-radio>
+                <v-radio label="No vegetables. Only meat. Nothing More Nothing less." color="green" :value="6"></v-radio>
               </v-radio-group>
             </v-col>
           </v-row>
