@@ -1,7 +1,7 @@
 <template>
   <v-app>
     <div>
-<!--      nav bar-->
+      <!--nav bar-->
       <v-app-bar color="light-green" dark app>
         <v-icon>mdi-alpha-a-box</v-icon>
         <router-link to="/" style="text-decoration: none; color: white"><v-toolbar-title>nime Search</v-toolbar-title></router-link>
@@ -15,11 +15,9 @@
           <v-icon>mdi-account</v-icon> Log-out
         </v-btn>
 
-        <v-form @submit.prevent="getAnimeShtuff">
-          <v-btn type="submit" @click="randomAnime = !randomAnime">
-            RANDOM
-          </v-btn>
-        </v-form>
+        <v-btn>
+          <router-link style="text-decoration: none; color: white" to="/random">Random <v-icon>mdi-help</v-icon></router-link>
+        </v-btn>
 
         <v-btn>
           <router-link style="text-decoration: none; color: white" to="/quiz">Quiz <v-icon>mdi-badge-account-outline</v-icon></router-link>
@@ -28,12 +26,11 @@
         <v-btn>
           <router-link style="text-decoration: none; color: white" to="/lists">Show<v-icon>mdi-archive</v-icon></router-link>
         </v-btn>
-
       </v-app-bar>
     </div>
     <br>
 
-<!--    search stuff-->
+    <!--search stuff-->
     <v-main>
       <v-form @submit.prevent="getAnimeShtuff">
         <v-row>
@@ -54,12 +51,10 @@
       </v-form>
     </v-main>
 
-<!--    displays anime-->
+    <!--displays anime-->
     <div id="chickenNuggets">
       <router-view :auth-user="authUser" :library="LibraryThingyThing" @update-watched="update" @update-watch-later="updateTwo"></router-view>
     </div>
-
-
   </v-app>
 </template>
 
@@ -150,7 +145,7 @@ export default {
       console.log('painpain', this.LibraryThingyThing)
     },
 
-    randomGrabby(){
+    /*randomGrabby(){
       console.log('ppp', this.animeSearchResults)
 
       let genres = "";
@@ -164,8 +159,7 @@ export default {
       });
 
       this.LibraryThingyThing.addItem(new Anime(this.animeSearchResults[0].images.jpg.large_image_url, this.animeSearchResults[0].title, studios, genres, this.animeSearchResults[0].score, this.animeSearchResults[0].synopsis))
-    },
-
+    },*/
 
     getAnimeShtuff(){
       let url = 'https://api.jikan.moe/v4/anime';
@@ -187,32 +181,30 @@ export default {
         }).finally(() => {
           this.grabby();
           console.log('anime', this.animeSearchResults)
-        })
+        })}
 
-
-      } else if (this.randomAnime) {
-        this.LibraryThingyThing = new LibraryCollection();
-
-        this.animeSearchResults = [];
-
-        url = 'https://api.jikan.moe/v4/random/anime'
-
-        axios.get(url)
-            .then(c => {
-              console.log('api response', c.data);
-              let asdf = []
-              asdf.push(c.data.data)
-              this.animeSearchResults = asdf;
-
-              console.log(asdf)
-            }).catch(error => {
-          console.log('error', error);
-        }).finally(() => {
-          this.randomGrabby();
-          console.log('anime', this.animeSearchResults)
-        })
-      }
-
+      //else if (this.randomAnime) {
+      //   this.LibraryThingyThing = new LibraryCollection();
+      //
+      //   this.animeSearchResults = [];
+      //
+      //   url = 'https://api.jikan.moe/v4/random/anime'
+      //
+      //   axios.get(url)
+      //       .then(c => {
+      //         console.log('api response', c.data);
+      //         let asdf = []
+      //         asdf.push(c.data.data)
+      //         this.animeSearchResults = asdf;
+      //
+      //         console.log(asdf)
+      //       }).catch(error => {
+      //     console.log('error', error);
+      //   }).finally(() => {
+      //     this.randomGrabby();
+      //     console.log('anime', this.animeSearchResults)
+      //   })
+      // }
     }
   },
 
@@ -225,7 +217,7 @@ export default {
       }
     })
   },
-};
+}
 </script>
 
 <style>
